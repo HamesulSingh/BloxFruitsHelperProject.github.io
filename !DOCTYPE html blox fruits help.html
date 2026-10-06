@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blox Fruits - Rule All Three Seas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dragonGreen: '#10B981',
+                        fireRed: '#EF4444',
+                        amberGlow: '#F59E0B',
+                        darkObsidian: '#0A0E17',
+                        cardBg: 'rgba(15, 23, 42, 0.75)',
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite alternate',
+                        'flame-float': 'flameFloat 4s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%': { boxShadow: '0 0 15px rgba(239, 68, 68, 0.3), 0 0 30px rgba(16, 185, 129, 0.2)' },
+                            '100%': { boxShadow: '0 0 35px rgba(239, 68, 68, 0.7), 0 0 60px rgba(16, 185, 129, 0.5)' },
+                        },
+                        flameFloat: {
+                            '0%': { transform: 'translateY(0px) scale(1)' },
+                            '100%': { transform: 'translateY(-10px) scale(1.02)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #070A10;
+            color: #E2E8F0;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 12px rgba(239, 68, 68, 0.7), 0 0 25px rgba(16, 185, 129, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070A10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #EF4444;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10B981;
+        }
+    </style>
+</head>
+<body class="selection:bg-fireRed selection:text-white">
+
+    <nav class="fixed top-0 left-0 w-full z-50 glass-panel border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToTop()">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-fireRed via-amberGlow to-dragonGreen flex items-center justify-center p-0.5 animate-pulse">
+                    <div class="w-full h-full bg-black rounded-full flex items-center justify-center">
+                        <i class="fa-solid font-bold fa-dragon text-dragonGreen text-xl"></i>
+                    </div>
+                </div>
+                <span class="font-heading font-black text-2xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-fireRed via-amberGlow to-dragonGreen">
+                    BLOX PROS
+                </span>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden lg:flex items-center space-x-8 font-semibold tracking-wide text-sm uppercase">
+                <a href="#about" class="hover:text-dragonGreen transition-colors">About</a>
+                <a href="#services" class="hover:text-dragonGreen transition-colors">Sea Services</a>
+                <a href="#schedule" class="hover:text-dragonGreen transition-colors">Schedule</a>
+                <a href="#contact" class="hover:text-dragonGreen transition-colors">Contact</a>
+            </div>
+
+            <!-- Header Contact & Live Status Badge -->
+            <div class="hidden sm:flex items-center space-x-3">
+                <div id="navLiveBadge" class="px-3 py-1.5 rounded-full bg-slate-900 border text-xs font-bold flex items-center space-x-2">
+                    <span id="navLiveDot" class="w-2 h-2 rounded-full animate-ping"></span>
+                    <span id="navLiveText">Checking IST Time...</span>
+                </div>
+                <a href="tel:9316193177" class="flex items-center space-x-2 px-3 py-2 rounded-xl bg-gradient-to-r from-fireRed to-amberGlow text-white font-bold shadow-lg hover:opacity-90 transition transform hover:-translate-y-0.5 text-xs">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>9316193177</span>
+                </a>
+                <a href="https://wa.me/91730680008" target="_blank" class="flex items-center space-x-2 px-3 py-2 rounded-xl bg-gradient-to-r from-dragonGreen to-emerald-600 text-white font-bold shadow-lg hover:opacity-90 transition transform hover:-translate-y-0.5 text-xs">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span>73068 0008</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menuBtn" class="lg:hidden text-2xl text-slate-300 focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobileMenu" class="hidden lg:hidden glass-panel px-6 py-4 space-y-4 border-t border-slate-800">
+            <div id="mobileLiveBadge" class="p-2.5 rounded-xl bg-slate-900 border text-xs font-bold flex items-center justify-center space-x-2">
+                <span id="mobileLiveDot" class="w-2 h-2 rounded-full"></span>
+                <span id="mobileLiveText">Checking IST Time...</span>
+            </div>
+            <a href="#about" class="block hover:text-dragonGreen transition-colors py-1">About</a>
+            <a href="#services" class="block hover:text-dragonGreen transition-colors py-1">Sea Services</a>
+            <a href="#schedule" class="block hover:text-dragonGreen transition-colors py-1">Schedule</a>
+            <a href="#contact" class="block hover:text-dragonGreen transition-colors py-1">Contact</a>
+            <div class="grid grid-cols-2 gap-2 pt-2">
+                <a href="tel:9316193177" class="block text-center py-2 rounded-lg bg-gradient-to-r from-fireRed to-amberGlow text-white font-bold text-xs">
+                    <i class="fa-solid fa-phone mr-1"></i>Call
+                </a>
+                <a href="https://wa.me/91730680008" target="_blank" class="block text-center py-2 rounded-lg bg-gradient-to-r from-dragonGreen to-emerald-600 text-white font-bold text-xs">
+                    <i class="fa-brands fa-whatsapp mr-1"></i>WhatsApp
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-screen pt-28 pb-16 flex items-center justify-center overflow-hidden">
+        <div class="absolute top-1/4 left-10 w-96 h-96 bg-fireRed/20 rounded-full filter blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-dragonGreen/20 rounded-full filter blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Hero Text Content -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                
+                <!-- Dynamic Live Status Banner -->
+                <div id="heroStatusBanner" class="inline-flex items-center space-x-3 px-4 py-2 rounded-full bg-slate-900/90 border border-slate-700 text-sm font-bold shadow-lg transition-all duration-300">
+                    <span id="heroStatusDot" class="w-3 h-3 rounded-full animate-ping bg-amberGlow"></span>
+                    <span id="heroStatusText" class="text-amberGlow">Calculating operating status...</span>
+                </div>
+
+                <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-wide">
+                    IF YOU WANT TO <span class="text-transparent bg-clip-text bg-gradient-to-r from-fireRed via-amberGlow to-dragonGreen text-glow">RULE ALL THREE SEAS</span> PRO CONTACT US!
+                </h1>
+
+                <p class="text-slate-300 text-lg sm:text-xl font-medium max-w-2xl mx-auto lg:mx-0">
+                    Master First Sea, Conquer Second Sea, and Dominate Third Sea with maximum speed, legendary fruit carries, level boosts, and Race V4 unlocks!
+                </p>
+
+                <!-- Strict Operating Hours Card -->
+                <div class="p-4 rounded-2xl bg-black/80 border border-amberGlow/50 max-w-xl mx-auto lg:mx-0 shadow-xl">
+                    <div class="flex items-center space-x-3 text-amberGlow font-bold text-sm mb-1">
+                        <i class="fa-solid fa-clock text-base animate-spin" style="animation-duration: 8s;"></i>
+                        <span>DAILY SERVICE WINDOW (STRICT HOURS)</span>
+                    </div>
+                    <p class="text-white text-base sm:text-lg font-extrabold">
+                        4:00 PM – 7:00 PM IST <span class="text-slate-400 font-normal text-sm">(10:30 AM – 1:30 PM GMT)</span>
+                    </p>
+                    <p id="currentIstDisplay" class="text-xs text-slate-400 font-mono mt-1">Current IST: Loading clock...</p>
+                </div>
+
+                <!-- CTA Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                    <a href="tel:9316193177" class="w-full sm:w-auto px-6 py-4 rounded-xl bg-gradient-to-r from-fireRed via-amberGlow to-fireRed bg-[length:200%_auto] hover:bg-right transition-all duration-500 text-white font-bold text-base shadow-xl shadow-fireRed/30 flex items-center justify-center space-x-3 transform hover:-translate-y-1">
+                        <i class="fa-solid fa-phone text-lg"></i>
+                        <span>Call: 9316193177</span>
+                    </a>
+
+                    <a href="https://wa.me/91730680008?text=Hi!%20I%20want%20to%20rule%20all%20three%20seas%20in%20Blox%20Fruits.%20Please%20give%20me%20details!" target="_blank" class="w-full sm:w-auto px-6 py-4 rounded-xl glass-panel border border-dragonGreen/50 text-dragonGreen hover:bg-dragonGreen hover:text-slate-950 transition-all duration-300 font-bold text-base shadow-lg flex items-center justify-center space-x-3 transform hover:-translate-y-1">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        <span>WhatsApp: 73068 0008</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="w-full max-w-lg glass-panel rounded-3xl p-6 sm:p-8 border border-slate-700/80 shadow-2xl relative overflow-hidden group">
+                    <div class="absolute -top-12 -right-12 w-40 h-40 bg-dragonGreen/20 rounded-full blur-2xl group-hover:bg-dragonGreen/30 transition"></div>
+                    <div class="absolute -bottom-12 -left-12 w-40 h-40 bg-fireRed/20 rounded-full blur-2xl group-hover:bg-fireRed/30 transition"></div>
+
+                    <div class="flex items-center justify-between pb-6 border-b border-slate-800">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-fireRed to-amberGlow flex items-center justify-center text-white text-xl font-bold shadow-lg">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-heading text-lg font-black text-white">PRO SEA SERVICE</h3>
+                                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Blox Fruits Boosting</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-dragonGreen/20 text-dragonGreen text-xs font-bold border border-dragonGreen/40 uppercase">VERIFIED</span>
+                    </div>
+
+                    <!-- Sea Features Badge Cards -->
+                    <div class="grid grid-cols-1 gap-4 my-6">
+                        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between hover:border-amberGlow/50 transition">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-lg bg-amberGlow/20 text-amberGlow font-black text-xs flex items-center justify-center">S1</span>
+                                <span class="text-sm font-bold text-slate-200">First Sea Mastery</span>
+                            </div>
+                            <span class="text-xs text-amberGlow font-extrabold">Lvl 1 - 700</span>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between hover:border-fireRed/50 transition">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-lg bg-fireRed/20 text-fireRed font-black text-xs flex items-center justify-center">S2</span>
+                                <span class="text-sm font-bold text-slate-200">Second Sea Raid & Awaken</span>
+                            </div>
+                            <span class="text-xs text-fireRed font-extrabold">Lvl 700 - 1500</span>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between hover:border-dragonGreen/50 transition">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-lg bg-dragonGreen/20 text-dragonGreen font-black text-xs flex items-center justify-center">S3</span>
+                                <span class="text-sm font-bold text-slate-200">Third Sea Max & Race V4</span>
+                            </div>
+                            <span class="text-xs text-dragonGreen font-extrabold">Lvl 3000 MAX</span>
+                        </div>
+                    </div>
+
+                    <!-- Contact Direct CTA Card -->
+                    <div class="p-4 rounded-xl bg-gradient-to-r from-slate-900 via-black to-slate-900 border border-slate-800 text-center space-y-2">
+                        <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Fast Service Hotline</p>
+                        <div class="flex items-center justify-center space-x-4 text-sm font-bold">
+                            <a href="tel:9316193177" class="text-amberGlow hover:underline flex items-center space-x-1">
+                                <i class="fa-solid fa-phone"></i>
+                                <span>9316193177</span>
+                            </a>
+                            <span class="text-slate-600">|</span>
+                            <a href="https://wa.me/91730680008" target="_blank" class="text-dragonGreen hover:underline flex items-center space-x-1">
+                                <i class="fa-brands fa-whatsapp"></i>
+                                <span>73068 0008</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-8 bg-slate-950/80 border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div class="p-4 rounded-xl glass-panel">
+                <h3 class="font-heading text-3xl sm:text-4xl font-black text-dragonGreen">100%</h3>
+                <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mt-1">Sea Rule Completion</p>
+            </div>
+            <div class="p-4 rounded-xl glass-panel">
+                <h3 class="font-heading text-3xl sm:text-4xl font-black text-amberGlow">3000</h3>
+                <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mt-1">Max Level Carries</p>
+            </div>
+            <div class="p-4 rounded-xl glass-panel">
+                <h3 class="font-heading text-3xl sm:text-4xl font-black text-fireRed">V4</h3>
+                <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mt-1">Race Awakening</p>
+            </div>
+            <div class="p-4 rounded-xl glass-panel">
+                <h3 class="font-heading text-2xl sm:text-3xl font-black text-white">4-7 PM</h3>
+                <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mt-1">Daily IST Slot</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="font-heading text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fireRed via-amberGlow to-dragonGreen">
+                    CONQUER ALL THREE SEAS
+                </h2>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+                    Choose your sea level or get a full 1-to-Max ocean conquest package during active hours (4 PM – 7 PM IST).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Sea 1 Card -->
+                <div class="glass-panel rounded-2xl p-8 relative overflow-hidden border border-slate-800 hover:border-amberGlow/50 transition duration-500 group flex flex-col justify-between hover:-translate-y-2">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-amberGlow/10 rounded-full filter blur-3xl group-hover:bg-amberGlow/20 transition"></div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-amberGlow/20 border border-amberGlow/40 flex items-center justify-center text-amberGlow text-2xl font-bold mb-6">
+                            1st
+                        </div>
+                        <h3 class="font-heading text-2xl font-bold text-white mb-3">FIRST SEA MASTERY</h3>
+                        <p class="text-slate-400 text-sm mb-6">
+                            Kickstart your adventure with fast quest grinding, boss farming, and fruit setup from Level 1 to 700.
+                        </p>
+                        <ul class="space-y-3 text-slate-300 text-sm mb-8">
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-check text-amberGlow"></i>
+                                <span>Level 1 - 700 Rapid Grinding</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-check text-amberGlow"></i>
+                                <span>Starter Sword & Fighting Styles</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-check text-amberGlow"></i>
+                                <span>Saber & Instinct V1 Unlocks</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="https://wa.me/91730680008?text=I%20need%20help%20with%20First%20Sea%20Mastery!" target="_blank" class="w-full py-3 rounded-xl bg-amberGlow/20 text-amberGlow hover:bg-amberGlow hover:text-black font-bold text-center transition">
+                        Select First Sea
+                    </a>
+                </div>
+
+                <!-- Sea 2 Card -->
+                <div class="glass-panel rounded-2xl p-8 relative overflow-hidden border border-fireRed/50 hover:border-fireRed transition duration-500 group flex flex-col justify-between hover:-translate-y-2 shadow-xl shadow-fireRed/10">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-fireRed/10 rounded-full filter blur-3xl group-hover:bg-fireRed/20 transition"></div>
+                    <div class="absolute top-4 right-4 px-3 py-1 bg-fireRed text-white text-xs font-black uppercase rounded-full tracking-wider">
+                        POPULAR
+                    </div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-fireRed/20 border border-fireRed/40 flex items-center justify-center text-fireRed text-2xl font-bold mb-6">
+                            2nd
+                        </div>
+                        <h3 class="font-heading text-2xl font-bold text-white mb-3">SECOND SEA CONQUEST</h3>
+                        <p class="text-slate-400 text-sm mb-6">
+                            Unlock Raids, awaken your devil fruits, gain trading access, and reach Level 1500 easily.
+                        </p>
+                        <ul class="space-y-3 text-slate-300 text-sm mb-8">
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-check text-fireRed"></i>
+                                <span>Level 700 - 1500 Progression</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-check text-fireRed"></i>
+                                <span>Fruit Awakening Raids</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-check text-fireRed"></i>
+                                <span>True Tri-Katanas & Weapons</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="https://wa.me/91730680008?text=I%20need%20help%20with%20Second%20Sea%20Conquest!" target="_blank" class="w-full py-3 rounded-xl bg-fireRed text-white hover:bg-fireRed/80 font-bold text-center transition shadow-lg shadow-fireRed/30">
+                        Select Second Sea
+                    </a>
+                </div>
+
+                <!-- Sea 3 Card -->
+                <div class="glass-panel rounded-2xl p-8 relative overflow-hidden border border-slate-800 hover:border-dragonGreen/50 transition duration-500 group flex flex-col justify-between hover:-translate-y-2">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-dragonGreen/10 rounded-full filter blur-3xl group-hover:bg-dragonGreen/20 transition"></div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-dragonGreen/20 border border-dragonGreen/40 flex items-center justify-center text-dragonGreen text-2xl font-bold mb-6">
+                            3rd
+                        </div>
+                        <h3 class="font-heading text-2xl font-bold text-white mb-3">THIRD SEA DOMINANCE</h3>
+                        <p class="text-slate-400 text-sm mb-6">
+                            Max out your character (3000), unlock Race V4 Tier, acquire Mythical fruits & rule PvP arenas.
+                        </p>
+                        <ul class="space-y-3 text-slate-300 text-sm mb-8">
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-check text-dragonGreen"></i>
+                                <span>Level 1500 - 3000 MAX LEVEL</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-check text-dragonGreen"></i>
+                                <span>Race V4 Awakening Trials</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-check text-dragonGreen"></i>
+                                <span>Cursed Dual Katana & Soul Guitar</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="https://wa.me/91730680008?text=I%20want%20Third%20Sea%20Dominance!" target="_blank" class="w-full py-3 rounded-xl bg-dragonGreen/20 text-dragonGreen hover:bg-dragonGreen hover:text-black font-bold text-center transition">
+                        Select Third Sea
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 relative bg-slate-950">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-panel rounded-3xl p-8 sm:p-12 border-2 border-slate-800 relative overflow-hidden shadow-2xl">
+                <div class="absolute -bottom-10 -right-10 w-72 h-72 bg-fireRed/20 rounded-full filter blur-3xl pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    
+                    <!-- Left Side Contact Info -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <span class="px-3 py-1 rounded-full bg-fireRed/20 text-fireRed text-xs font-bold uppercase tracking-widest border border-fireRed/40">
+                            PRO CONTACT HOTLINE
+                        </span>
+                        <h2 class="font-heading text-3xl sm:text-4xl font-black text-white leading-tight">
+                            READY TO BECOME A SEA LEGEND?
+                        </h2>
+                        <p class="text-slate-300 text-sm">
+                            Reach out during our operating hours for instant service setup, custom order inquiries, or quick player carries.
+                        </p>
+
+                        <!-- Service Hours Box -->
+                        <div class="p-4 rounded-2xl bg-black/60 border border-amberGlow/40 space-y-2">
+                            <p class="text-xs text-amberGlow uppercase tracking-wider font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-clock"></i> Service Operating Hours
+                            </p>
+                            <p class="text-lg font-bold text-white">4:00 PM – 7:00 PM <span class="text-xs text-amberGlow">IST</span></p>
+                            <p class="text-sm font-semibold text-slate-400">10:30 AM – 1:30 PM <span class="text-xs text-slate-500">GMT</span></p>
+                        </div>
+
+                        <!-- Phone Call Box -->
+                        <div class="p-4 rounded-2xl bg-black/60 border border-slate-800 space-y-2">
+                            <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Direct Phone Line</p>
+                            <a href="tel:9316193177" class="text-xl font-black text-amberGlow hover:text-white transition flex items-center space-x-3">
+                                <i class="fa-solid fa-headset text-fireRed"></i>
+                                <span>+91 9316193177</span>
+                            </a>
+                        </div>
+
+                        <!-- WhatsApp Box -->
+                        <div class="p-4 rounded-2xl bg-black/60 border border-slate-800 space-y-2">
+                            <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">WhatsApp Line</p>
+                            <a href="https://wa.me/91730680008" target="_blank" class="text-xl font-bold text-dragonGreen hover:text-white transition flex items-center space-x-3">
+                                <i class="fa-brands fa-whatsapp text-2xl"></i>
+                                <span>+91 73068 0008</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right Side WhatsApp Form -->
+                    <div class="lg:col-span-7 bg-black/40 p-6 sm:p-8 rounded-2xl border border-slate-800">
+                        <h3 class="font-heading text-xl font-bold text-white mb-4">Send Instant WhatsApp Request</h3>
+                        <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1 font-semibold">Your Roblox Username</label>
+                                <input type="text" id="username" required placeholder="e.g. DragonSlayer_99" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-dragonGreen transition text-sm">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1 font-semibold">Target Sea</label>
+                                    <select id="seaSelect" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-dragonGreen transition text-sm">
+                                        <option value="All Three Seas Package">All Three Seas Package</option>
+                                        <option value="First Sea Mastery">First Sea Mastery</option>
+                                        <option value="Second Sea Conquest">Second Sea Conquest</option>
+                                        <option value="Third Sea Dominance">Third Sea Dominance</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1 font-semibold">Your Phone Number</label>
+                                    <input type="tel" id="userPhone" required placeholder="Your contact number" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-dragonGreen transition text-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1 font-semibold">Service Details</label>
+                                <textarea id="message" rows="3" placeholder="Specify your level or requested fruit boost..." class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-dragonGreen transition text-sm"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-fireRed via-amberGlow to-dragonGreen text-slate-950 font-black text-lg hover:opacity-95 transition transform active:scale-95 shadow-xl">
+                                SEND REQUEST VIA WHATSAPP
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-slate-900 glass-panel">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-dragon text-dragonGreen text-2xl"></i>
+                <span class="font-heading font-black text-xl text-white">BLOX PRO SERVICES</span>
+            </div>
+
+            <p class="text-slate-500 text-sm text-center">
+                Operating Hours: 4 PM - 7 PM IST (10:30 AM - 1:30 PM GMT) | Call: <a href="tel:9316193177" class="text-amberGlow hover:underline">9316193177</a> | WhatsApp: <a href="https://wa.me/91730680008" target="_blank" class="text-dragonGreen hover:underline">73068 0008</a>
+            </p>
+
+            <div class="flex items-center space-x-4 text-slate-400 text-lg">
+                <a href="tel:9316193177" class="hover:text-fireRed transition"><i class="fa-solid fa-phone"></i></a>
+                <a href="https://wa.me/91730680008" target="_blank" class="hover:text-dragonGreen transition"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Real-Time IST Time & Operating Status Checker
+        function checkISTStatus() {
+            // Get current time in Indian Standard Time (UTC+5:30)
+            const now = new Date();
+            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const istOffsetHours = 5;
+            const istOffsetMinutes = 30;
+            const istTime = new Date(utcTime + (3600000 * istOffsetHours) + (60000 * istOffsetMinutes));
+
+            const currentHour = istTime.getHours();
+            const currentMinute = istTime.getMinutes();
+            const currentSeconds = istTime.getSeconds();
+
+            // Format IST clock string
+            const formattedIstTime = istTime.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+
+            document.getElementById('currentIstDisplay').innerText = `Current IST Time: ${formattedIstTime}`;
+
+            // Operating Hours: 16:00 (4:00 PM) to 19:00 (7:00 PM)
+            const isOnline = (currentHour >= 16 && currentHour < 19);
+
+            // UI Elements
+            const heroBanner = document.getElementById('heroStatusBanner');
+            const heroDot = document.getElementById('heroStatusDot');
+            const heroText = document.getElementById('heroStatusText');
+
+            const navBadge = document.getElementById('navLiveBadge');
+            const navDot = document.getElementById('navLiveDot');
+            const navText = document.getElementById('navLiveText');
+
+            const mobileBadge = document.getElementById('mobileLiveBadge');
+            const mobileDot = document.getElementById('mobileLiveDot');
+            const mobileText = document.getElementById('mobileLiveText');
+
+            if (isOnline) {
+                // ONLINE STATUS (🟢)
+                const onlineText = "🟢 ONLINE NOW (4 PM - 7 PM IST)";
+                
+                heroBanner.className = "inline-flex items-center space-x-3 px-4 py-2 rounded-full bg-emerald-950/80 border border-emerald-500/50 text-sm font-bold shadow-lg shadow-emerald-500/20";
+                heroDot.className = "w-3 h-3 rounded-full animate-ping bg-emerald-400";
+                heroText.innerText = onlineText;
+                heroText.className = "text-emerald-400";
+
+                navBadge.className = "px-3 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-xs font-bold flex items-center space-x-2";
+                navDot.className = "w-2 h-2 rounded-full animate-ping bg-emerald-400";
+                navText.innerText = "🟢 ONLINE NOW";
+
+                mobileBadge.className = "p-2.5 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-xs font-bold flex items-center justify-center space-x-2";
+                mobileDot.className = "w-2 h-2 rounded-full animate-ping bg-emerald-400";
+                mobileText.innerText = "🟢 ONLINE NOW (4 PM - 7 PM IST)";
+            } else {
+                // OFFLINE STATUS (🔴)
+                const offlineText = "🔴 OFFLINE NOW (Opens at 4 PM IST)";
+
+                heroBanner.className = "inline-flex items-center space-x-3 px-4 py-2 rounded-full bg-rose-950/80 border border-rose-500/50 text-sm font-bold shadow-lg shadow-rose-500/20";
+                heroDot.className = "w-3 h-3 rounded-full bg-rose-500";
+                heroText.innerText = offlineText;
+                heroText.className = "text-rose-400";
+
+                navBadge.className = "px-3 py-1.5 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-400 text-xs font-bold flex items-center space-x-2";
+                navDot.className = "w-2 h-2 rounded-full bg-rose-500";
+                navText.innerText = "🔴 OFFLINE NOW";
+
+                mobileBadge.className = "p-2.5 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-400 text-xs font-bold flex items-center justify-center space-x-2";
+                mobileDot.className = "w-2 h-2 rounded-full bg-rose-500";
+                mobileText.innerText = "🔴 OFFLINE NOW (Opens at 4 PM IST)";
+            }
+        }
+
+        // Initial check and set interval timer
+        checkISTStatus();
+        setInterval(checkISTStatus, 1000);
+
+        // WhatsApp Form Handler
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const sea = document.getElementById('seaSelect').value;
+            const phone = document.getElementById('userPhone').value;
+            const message = document.getElementById('message').value;
+
+            const text = `Hi! I want to rule the seas in Blox Fruits.%0A%0A*Username:* ${encodeURIComponent(username)}%0A*Package:* ${encodeURIComponent(sea)}%0A*Contact Phone:* ${encodeURIComponent(phone)}%0A*Details:* ${encodeURIComponent(message)}`;
+            
+            window.open(`https://wa.me/91730680008?text=${text}`, '_blank');
+        }
+    </script>
+</body>
+</html>
